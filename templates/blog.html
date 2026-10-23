@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Блог — Dev Portfolio{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Портфоліо розробника</p>
+    <h1>Блог</h1>
+    <p class="hero-lead">Нотатки про розробку, інструменти та підходи, які я використовую у роботі.</p>
+</section>
+
+<div class="section-head">
+    <h2>Статті</h2>
+    <span class="section-count">{{ blogs|length }}</span>
+</div>
+
+{% if blogs %}
+<ol class="project-list">
+    {% for blog in blogs %}
+    <li>
+        {% if blog.url %}
+        <a class="project-row" href="{{ blog.url }}">
+        {% else %}
+        <span class="project-row">
+        {% endif %}
+            <span class="project-index">{{ forloop.counter|stringformat:"02d" }}</span>
+
+            <span class="project-content">
+                <span class="project-title">{{ blog.title }}</span>
+                <span class="project-desc">{{ blog.description }}</span>
+                <span class="project-meta">
+                    {% if blog.tech_list %}
+                        <span>{{ blog.tech_list|join:" / " }}</span>
+                    {% endif %}
+                </span>
+            </span>
+
+            {% if blog.image %}
+                <span class="project-thumb">
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" loading="lazy">
+                </span>
+            {% endif %}
+
+            {% if blog.url %}
+            <span class="project-arrow" aria-hidden="true">&rarr;</span>
+            {% endif %}
+        {% if blog.url %}
+        </a>
+        {% else %}
+        </span>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ol>
+{% else %}
+<div class="empty-state">
+    <p>Статей поки немає.</p>
+    <small>Додайте першу статтю через адмін-панель.</small>
+</div>
+{% endif %}
+{% endblock %}

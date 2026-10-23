@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Проєкти — Dev Portfolio{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Портфоліо розробника</p>
+    <h1>Проєкти</h1>
+    <p class="hero-lead">Вибрані роботи — від невеликих експериментів до застосунків, які використовуються щодня.</p>
+</section>
+
+<div class="section-head">
+    <h2>Роботи</h2>
+    <span class="section-count">{{ projects|length }}</span>
+</div>
+
+{% if projects %}
+<ol class="project-list">
+    {% for project in projects %}
+    <li>
+        <a class="project-row" href="{% url 'project_detail' project.pk %}">
+            <span class="project-index">{{ forloop.counter|stringformat:"02d" }}</span>
+
+            <span class="project-content">
+                <span class="project-title">{{ project.title }}</span>
+                <span class="project-desc">{{ project.description }}</span>
+                <span class="project-meta">
+                    <span>{{ project.created_at|date:"d.m.Y" }}</span>
+                    {% if project.tech_list %}
+                        <span class="divider">/</span>
+                        <span>{{ project.tech_list|join:" / " }}</span>
+                    {% endif %}
+                </span>
+            </span>
+
+            {% if project.image %}
+                <span class="project-thumb">
+                    <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
+                </span>
+            {% endif %}
+
+            <span class="project-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+    </li>
+    {% endfor %}
+</ol>
+{% else %}
+<div class="empty-state">
+    <p>Проєктів поки немає.</p>
+    <small>Додайте перший проєкт через адмін-панель.</small>
+</div>
+{% endif %}
+{% endblock %}
